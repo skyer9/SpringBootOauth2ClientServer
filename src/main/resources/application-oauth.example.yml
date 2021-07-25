@@ -1,0 +1,23 @@
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: XXXXXXXXXX
+            client-secret: XXXXXXXXXXXXX
+            scope: profile, email
+          local:
+            client-id: foo
+            client-secret: bar
+            scope: profile, email
+            redirect-uri: http://localhost:8080/login/oauth2/code/local
+            authorization-grant-type: authorization_code
+            client-name: Local
+        provider:
+          local:
+            authorization-uri: http://auth.localhost:9000/oauth/authorize
+            token-uri: http://auth.localhost:9000/oauth/token
+            user-info-uri: http://res.localhost:9001/api/userinfo
+            user-name-attribute: name
