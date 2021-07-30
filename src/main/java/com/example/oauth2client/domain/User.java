@@ -38,7 +38,7 @@ public class User {
 
     public User update(String name, String email, String picture) {
         this.username = name;
-        this.email = email;
+        // this.email = email;
         this.picture = picture;
 
         return this;
