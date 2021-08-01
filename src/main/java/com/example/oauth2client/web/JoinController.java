@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -27,17 +25,5 @@ public class JoinController {
         model.addAttribute("user", userDto);
 
         return "join/user";
-    }
-
-    @PostMapping("/user")
-    public String doJoin(@ModelAttribute("user") UserDto userDto) {
-        try {
-            //userService.registerNewUserAccount(userDto);
-            System.out.println(userDto.getEmail());
-        } catch (Exception ex) {
-            return "join";
-        }
-
-        return "redirect:/login";
     }
 }

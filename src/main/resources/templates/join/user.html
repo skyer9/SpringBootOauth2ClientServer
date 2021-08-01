@@ -8,32 +8,6 @@
 function jsCheckJoin() {
     var frm = document.frm;
 
-    if (jsCheckValueInputted(frm.firstName, '이름') !== true) {
-        return false;
-    }
-
-    if (jsCheckValueInputted(frm.lastName, '성') !== true) {
-        return false;
-    }
-
-    if (jsCheckValueInputted(frm.email, '이메일') !== true) {
-        return false;
-    }
-
-    if (jsCheckValueInputted(frm.password, '비밀번호') !== true) {
-        return false;
-    }
-
-    if (jsCheckValueInputted(frm.matchingPassword, '비밀번호 확인') !== true) {
-        return false;
-    }
-
-    if (frm.password.value !== frm.matchingPassword.value) {
-        alert('비밀번호가 서로 일치하지 않습니다.');
-        frm.matchingPassword.focus();
-        return false;
-    }
-
     $.ajax({
         url: "http://localhost:9002/api/register",
         type: "post",
@@ -84,15 +58,6 @@ jQuery.fn.serializeObject = function() {
 
     return obj;
 };
-
-function jsCheckValueInputted(element, name) {
-    if (element.value === '') {
-        alert(name + '을(를) 입력하세요.');
-        element.focus();
-        return false;
-    }
-    return true;
-}
 </script>
 </head>
 <body>
