@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>로그인</title>
 </head>
 <body>
 <div class="col-md-12">
@@ -11,9 +11,11 @@
             <div th:if="${userName != null}" th:inline="text">
                 [[${userName}]] 님, 안녕하세요.
                 <a href="/logout" class="btn btn-info active" role="button">로그아웃</a>
+                <a href="/p/changepassword" class="btn btn-info active" role="button">인증서버 비밀번호 변경</a>
             </div>
             <div th:if="${userName == null}">
                 <a href="/login" class="btn btn-success active" role="button">로그인</a>
+                <a href="/join/user" class="btn btn-success active" role="button">회원가입</a>
             </div>
         </div>
     </div>

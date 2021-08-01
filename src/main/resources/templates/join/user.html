@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="us">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+function jsCheckJoin() {
+    var frm = document.frm;
+
+    if (jsCheckValueInputted(frm.firstName, '이름') !== true) {
+        return false;
+    }
+
+    if (jsCheckValueInputted(frm.lastName, '성') !== true) {
+        return false;
+    }
+
+    if (jsCheckValueInputted(frm.email, '이메일') !== true) {
+        return false;
+    }
+
+    if (jsCheckValueInputted(frm.password, '비밀번호') !== true) {
+        return false;
+    }
+
+    if (jsCheckValueInputted(frm.matchingPassword, '비밀번호 확인') !== true) {
+        return false;
+    }
+
+    if (frm.password.value !== frm.matchingPassword.value) {
+        alert('비밀번호가 서로 일치하지 않습니다.');
+        frm.matchingPassword.focus();
+        return false;
+    }
+
+    $.ajax({
+        url: "http://localhost:9002/api/register",
+        type: "post",
+        accept: "application/json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify($("#frm").serializeObject()),
+        dataType: "json",
+        success: function(data) {
+            // success handle
+            alert('등록되었습니다.');
+            document.location.href = 'http://localhost:8080/oauth2/authorization/local';
+        },
+        error:function(request,status,error){
+            // alert("code:"+request.status);
+            //alert(request.responseText);
+            // alert("error:"+error);
+
+            var result = JSON.parse(request.responseText);
+            var errorList = JSON.parse(result.message);
+            //alert(result.message);
+            for (var i = 0; i < errorList.length; i++) {
+                //alert(errorList[i].object);
+                alert(errorList[i].defaultMessage);
+            }
+            //alert(errorList);
+        }
+    });
+
+    return false;
+}
+
+jQuery.fn.serializeObject = function() {
+    var obj = null;
+    try {
+        if (this[0].tagName && this[0].tagName.toUpperCase() === "FORM") {
+            var arr = this.serializeArray();
+            if (arr) {
+                obj = {};
+                jQuery.each(arr, function() {
+                    obj[this.name] = this.value;
+                });
+            }//if ( arr ) {
+        }
+    } catch (e) {
+        alert(e.message);
+    } finally {
+    }
+
+    return obj;
+};
+
+function jsCheckValueInputted(element, name) {
+    if (element.value === '') {
+        alert(name + '을(를) 입력하세요.');
+        element.focus();
+        return false;
+    }
+    return true;
+}
+</script>
+</head>
+<body>
+
+<h1>회원가입</h1>
+
+<form id="frm" name="frm" action="/join/user" th:object="${user}" method="POST" onsubmit="return jsCheckJoin()">
+    <div>
+        <label>이름</label>
+        <input th:field="*{firstName}"/>
+        <p th:each="error: ${#fields.errors('firstName')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label>성</label>
+        <input th:field="*{lastName}"/>
+        <p th:each="error : ${#fields.errors('lastName')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label>이메일</label>
+        <input type="email" th:field="*{email}"/>
+        <p th:each="error : ${#fields.errors('email')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label>비밀번호</label>
+        <input type="password" th:field="*{password}"/>
+        <p th:each="error : ${#fields.errors('password')}"
+           th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label>비밀번호 확인</label>
+        <input type="password" th:field="*{matchingPassword}"/>
+    </div>
+    <button type="submit">회원가입</button>
+</form>
+
+<a href="/login">로그인</a>
+
+</body>
+</html>
